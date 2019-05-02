@@ -8,6 +8,22 @@
 #include <stdio.h>
 #include <omp.h>
 #include <stdbool.h>
+bool isPrime(long candidate)
+{
+	if(candidate <= 1)
+	{
+		return false;
+	}
+	for(int i = 2; i <= candidate; i++)
+	{
+		if((candidate % i) = 0)
+		{
+			return false;
+		}
+	}	
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 	if(argc != 2)
@@ -32,15 +48,12 @@ int main(int argc, char *argv[])
 		}
 		while(!flag)
 		{
-			prime1 = rand() % 25;
-			do
-			{
-				prime2 = rand() % 25;
-			} while(prime1 == prime2);
-			printf("Checking %ld and %ld on thread %d\n", prime1, prime2, tid);
-			if(prime1 * prime2 == parameter)
+			prime1 = rand() % (parameter / 2);
+			printf("Checking %ld on thread %d\n", prime1, tid);
+			if(isPrime(parameter / prime1))
 			{
 				flag = true;
+				prime2 = (parameter / prime1)
 				printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter);
 			}
 		}
@@ -48,3 +61,5 @@ int main(int argc, char *argv[])
 	} //All threads join
 	printf("All threads successfully joined.\nThere were %d threads.\n", nthreads);
 }
+
+
