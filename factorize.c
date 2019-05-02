@@ -8,27 +8,32 @@
 #include <stdio.h>
 #include <omp.h>
 #include <stdbool.h>
+/**
+* Checks if a long is prime
+* @param candidate: long to check
+* @return: true if prime, false if not
+**/
 bool isPrime(long candidate)
 {
-	if(candidate <= 1)
+	if(candidate <= 1) //Can't be negative, 0, or 1
 	{
 		return false;
 	}
-	for(int i = 2; i <= candidate; i++)
+	for(int i = 2; i <= candidate / 2; i++) //Can't be higher than candidate / 2
 	{
-		if((candidate % i) == 0)
+		if((candidate % i) == 0) //Checks all possible factors, marking as not prime if factor is found
 		{
 			return false;
 		}
 	}	
-	return true;
+	return true; //No factor found, must be prime
 }
 
 int main(int argc, char *argv[])
 {
 	if(argc != 2)
 	{
-		printf("Usage: ./factorize <large multiple of two primes>\n");
+		printf("Usage: ./factorize <large multiple of two primes>\n"); //Let user know the usage if they don't give correct parameters
 		return(0); //Return if no parameters or too many
 	}
 
@@ -40,21 +45,24 @@ int main(int argc, char *argv[])
 	bool flag = false; //Checks if a result has been found
 	#pragma omp parallel shared(nthreads,parameter, flag) private(tid, prime1, prime2) //Split into multiple threads
 	{
-		tid = omp_get_thread_num();
+		tid = omp_get_thread_num(); //Check the thread number
 		printf("Thread number %d checking in!\n", tid);
 		if(tid == 0)
 		{
-			nthreads = omp_get_num_threads();
+			nthreads = omp_get_num_threads(); //Get number of threads
 		}
-		while(!flag)
+		while(!flag) //Keep checking on each thread until found.
 		{
-			prime1 = rand() % (parameter / 2);
+			do{
+				prime1 = rand() % (parameter / 2); //Generates random longs lower than half the parameter (multiple can't be larger than that)
+				printf("Number %ld generated on thread %d\n", prime1, tid);
+			} while( !flag && !isPrime(prime1)); //Keep generating new random numbers till another thread found one or generated number is prime 
 			printf("Checking %ld on thread %d\n", prime1, tid);
-			if(isPrime(parameter / prime1))
-			{
-				flag = true;
-				prime2 = (parameter / prime1);
-				printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter);
+			if(!flag && ((double)parameter / prime1) - (parameter / prime1) == 0 && isPrime(parameter / prime1))
+			{ //Check if another thread already found answer, then if prime1 divides evenly, then if it's one of two prime factors
+				flag = true; //Stop other threads
+				prime2 = (parameter / prime1); //sets prime2 to value found by dividing parameter and prime1
+				printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter); //Tell user that answer was found
 			}
 		}
 
