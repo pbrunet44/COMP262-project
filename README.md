@@ -16,4 +16,4 @@ If you use MPI, you will be given access to a cluster of at least 2 nodes of 8 p
 
 Crack a public/private key pair. After reading this forum answer (https://stackoverflow.com/questions/439870/why-are-primes-important-in-cryptography) describing the importance of prime numbers in cryptography, write a parallel program to factorize a large multiple of two prime numbers. The program should take an large number as input, and output its two prime factors.
 Your code submission will be graded by me on code clarity through comments, choice of method, and functionality.
-For the student competition, you will be given several large numbers to factor (all numbers will be < LaTeX: 2^{32} 2 32 ). First team to accurately factor all of the numbers (or to factor the most prime numbers) wins.
+For the student competition, you will be given several large numbers to factor (all numbers will be < 2^32). First team to accurately factor all of the numbers (or to factor the most prime numbers) wins.
