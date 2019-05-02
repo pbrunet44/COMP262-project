@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 			if(isPrime(parameter / prime1))
 			{
 				flag = true;
-				prime2 = (parameter / prime1)
+				prime2 = (parameter / prime1);
 				printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter);
 			}
 		}
