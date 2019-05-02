@@ -16,7 +16,7 @@ bool isPrime(long candidate)
 	}
 	for(int i = 2; i <= candidate; i++)
 	{
-		if((candidate % i) = 0)
+		if((candidate % i) == 0)
 		{
 			return false;
 		}
