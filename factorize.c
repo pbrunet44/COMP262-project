@@ -51,19 +51,19 @@ int main(int argc, char *argv[])
 		{
 			nthreads = omp_get_num_threads(); //Get number of threads
 		}
-		while(!flag) //Keep checking on each thread until found.
-		{
-			do{
-				prime1 = rand() % (parameter / 2); //Generates random longs lower than half the parameter (multiple can't be larger than that)
-				printf("Number %ld generated on thread %d\n", prime1, tid);
-			} while( !flag && !isPrime(prime1)); //Keep generating new random numbers till another thread found one or generated number is prime 
-			printf("Checking %ld on thread %d\n", prime1, tid);
-			if(!flag && ((double)parameter / prime1) - (parameter / prime1) == 0 && isPrime(parameter / prime1))
-			{ //Check if another thread already found answer, then if prime1 divides evenly, then if it's one of two prime factors
-				flag = true; //Stop other threads
-				prime2 = (parameter / prime1); //sets prime2 to value found by dividing parameter and prime1
-				printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter); //Tell user that answer was found
+		for(prime1 = tid; !flag && prime1 < parameter / 2; prime1 += nthreads) //Each thread checks a portion of the primes
+		{		
+			if(isPrime(prime1)) //If not prime, continue
+			{
+				printf("Checking %ld on thread %d\n", prime1, tid);
+				if(!flag && ((double)parameter / prime1) - (parameter / prime1) == 0 && isPrime(parameter / prime1))
+				{ //Check if another thread already found answer, then if prime1 divides evenly, then if it's one of two prime factors
+					flag = true; //Stop other threads
+					prime2 = (parameter / prime1); //sets prime2 to value found by dividing parameter and prime1
+					printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter); //Tell user that answer was found
+				}
 			}
+			
 		}
 
 	} //All threads join
