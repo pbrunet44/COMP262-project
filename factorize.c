@@ -1,5 +1,7 @@
 /**
 * factorize.c: Uses OpenMP to factorize a large number (passed as a command line argument) into two primes.
+* Has each thread check a certain portion of possible factors (for four threads, thread 1 would check 1, 5, 9, etc.)
+* Checks if potential factor is prime, then if it evenly divides into the parameter, then if the parameter divided by the factor is prime
 * Authors: Philip Brunet, Max Ranes
 * Date: 5/2/2019
 * Final Project for COMP 262 w/ Prof. Scott Feister
@@ -50,8 +52,15 @@ int main(int argc, char *argv[])
 		if(tid == 0)
 		{
 			nthreads = omp_get_num_threads(); //Get number of threads
+			if(parameter % 2 == 0) //If even, we alrady know the answer
+			{
+				flag = true;
+				prime1 = 2;
+				prime2 = parameter / 2;
+				printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter);
+			}
 		}
-		for(prime1 = tid; !flag && prime1 < parameter / 2; prime1 += nthreads) //Each thread checks a portion of the primes
+		for(prime1 = 3 + 2 * tid; !flag && prime1 <= parameter / 2; prime1 += nthreads) //Each thread checks a portion of the primes; doesn't need to check evens
 		{		
 			if(isPrime(prime1)) //If not prime, continue
 			{
@@ -69,3 +78,4 @@ int main(int argc, char *argv[])
 	} //All threads join
 	//printf("All threads successfully joined.\nThere were %d threads.\n", nthreads);
 }
+
