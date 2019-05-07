@@ -1,6 +1,6 @@
 /**
 * factorize.c: Uses OpenMP to factorize a large number (passed as a command line argument) into two primes.
-* Has each thread check a certain portion of possible factors (for four threads, thread 0 would check 3, 7, 11, etc.)
+* Has each thread check a certain portion of possible factors (for four threads, thread 0 would check 3, 11, 19, 27 etc.)
 * Preemptively checks if even to find factor of 2, otherwise only checks odds from 3 to parameter / 2
 * Checks if potential factor is prime, then if it evenly divides into the parameter, then if the parameter divided by the factor is prime
 * Authors: Philip Brunet, Max Ranes
