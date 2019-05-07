@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 	#pragma omp parallel shared(nthreads,parameter, flag) private(tid, prime1, prime2) //Split into multiple threads
 	{
 		tid = omp_get_thread_num(); //Check the thread number
-		printf("Thread number %d checking in!\n", tid);
+		//printf("Thread number %d checking in!\n", tid);
 		if(tid == 0)
 		{
 			nthreads = omp_get_num_threads(); //Get number of threads
@@ -55,9 +55,9 @@ int main(int argc, char *argv[])
 		{		
 			if(isPrime(prime1)) //If not prime, continue
 			{
-				printf("Checking %ld on thread %d\n", prime1, tid);
-				if(!flag && ((double)parameter / prime1) - (parameter / prime1) == 0 && isPrime(parameter / prime1))
-				{ //Check if another thread already found answer, then if prime1 divides evenly, then if it's one of two prime factors
+				//printf("Checking %ld on thread %d\n", prime1, tid);
+				if(((double)parameter / prime1) - (parameter / prime1) == 0 && isPrime(parameter / prime1))
+				{ //Check if prime1 divides evenly, then if it's one of two prime factors
 					flag = true; //Stop other threads
 					prime2 = (parameter / prime1); //sets prime2 to value found by dividing parameter and prime1
 					printf("ANSWER FOUND! %ld and %ld are the factors of %ld\n", prime1, prime2, parameter); //Tell user that answer was found
@@ -67,7 +67,5 @@ int main(int argc, char *argv[])
 		}
 
 	} //All threads join
-	printf("All threads successfully joined.\nThere were %d threads.\n", nthreads);
+	//printf("All threads successfully joined.\nThere were %d threads.\n", nthreads);
 }
-
-
