@@ -15,6 +15,7 @@
 * Checks if a long is prime
 * @param candidate: long to check
 * @return: true if prime, false if not
+* Based on C++ function from https://www.geeksforgeeks.org/prime-numbers/
 **/
 bool isPrime(long candidate)
 {
@@ -55,6 +56,10 @@ int main(int argc, char *argv[])
 			nthreads = omp_get_num_threads(); //Get number of threads
 			if(parameter % 2 == 0) //If even, we alrady know the answer
 			{
+				if(!isPrime(parameter/2))
+				{
+					return 1; //Is even, but not product of 2 primes
+				}
 				flag = true;
 				prime1 = 2;
 				prime2 = parameter / 2;
@@ -78,3 +83,4 @@ int main(int argc, char *argv[])
 	} //All threads join
 	//printf("All threads successfully joined.\nThere were %d threads.\n", nthreads);
 }
+
